@@ -1,15 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
+import Input from "./Input";
+import List from "./List";
 
-const App = ()=>{
+const App = () => {
+  const [list, setList] = useState([]);
 
-    const element = (
-        <div>
-            <h1>Hello World !</h1>
-            <p>This is React app.</p>
-        </div>
-    )
+  const addList = (text) => {
+    setList((prevValue) => {
+      return [...prevValue, text];
+    });
+  };
 
-    return element;
-}
+  const deleteList = (id) => {
+    setList((prevValue) => {
+      return prevValue.filter((item, index) => {
+        return index !== id;
+      });
+    });
+  };
+
+  const element = (
+    <div className="container">
+      <div className="heading">
+        <h1>To Do List</h1>
+      </div>
+      <Input onAdd={addList} />
+      <div>
+        {list.map((item, index) => {
+          return (
+            <List key={index} id={index} note={item} onDelete={deleteList} />
+          );
+        })}
+      </div>
+    </div>
+  );
+
+  return element;
+};
 
 export default App;
